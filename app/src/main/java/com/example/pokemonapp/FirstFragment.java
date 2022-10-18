@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.Glide;
@@ -64,10 +65,13 @@ public class FirstFragment extends Fragment {
         refresh();
 
         super.onViewCreated(view, savedInstanceState);
+        PokemonViewModel viewModel = new ViewModelProvider(getActivity()).get(PokemonViewModel.class);
+viewModel.getPokemones().observe(getActivity(),pokemons -> {
+    adapter.clear();
+    adapter.addAll(pokemons);
+});
+
     }
-
-
-
 
 
     public void refresh() {
@@ -106,6 +110,8 @@ public class FirstFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 
     class PokemonAdapter extends ArrayAdapter<Pokemon> {
         public PokemonAdapter(@NonNull Context context, int resource, @NonNull List objects) {
